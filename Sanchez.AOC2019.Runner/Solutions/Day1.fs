@@ -1,5 +1,6 @@
 module Sanchez.AOC2019.Runner.Solutions.Day1
 
+open Sanchez.AOC2019.Runner.Core
 open System.IO
 
 let fuelForModule mass =
@@ -12,7 +13,7 @@ let rec advancedFuelForModule mass =
 
 let solution () =
     let lines =
-        File.ReadLines "../../../Inputs/day1.txt"
+        readInputFile 1
         |> Seq.map int
         |> Seq.toList
         

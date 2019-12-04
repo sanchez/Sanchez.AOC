@@ -1,4 +1,5 @@
 module Sanchez.AOC2019.Runner.Core
+open System.IO
 
 type SolutionComputer = unit -> string
 
@@ -16,3 +17,7 @@ let rec processAndPrint (computer: SolutionComputer list) (depth: int) =
 let generateAndPrint computers =
     printfn "Processing solutions:"
     processAndPrint computers 1
+    
+let readInputFile day =
+    sprintf "../../../Inputs/day%d.txt" day
+    |> File.ReadLines
