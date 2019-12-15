@@ -1,86 +1,69 @@
 module Sanchez.AOC2019.Runner.Solutions.Day2
 
 open Sanchez.AOC2019.Runner.Core
-        
-type Statements =
-    | Addition of int * int * int
-    | Multiplication of int * int * int
-    | Halt of unit
-    
-let getAddition (opcodes: int list) =
-    let read1 = opcodes.Head
-    let read2 = opcodes.Tail.Head
-    let write = opcodes.Tail.Tail.Head
-    (read1, read2, write)
-    |> Addition
-    |> (fun x -> (x, opcodes.Tail.Tail.Tail))
-    
-let getMultiplication (opcodes: int list) =
-    let read1 = opcodes.Head
-    let read2 = opcodes.Tail.Head
-    let write = opcodes.Tail.Tail.Head
-    (read1, read2, write)
-    |> Multiplication
-    |> (fun x -> (x, opcodes.Tail.Tail.Tail))
-    
-let getHalt (opcodes: int list) =
-    Halt ()
-    |> (fun x -> (x, opcodes))
-        
-let getStatement (operator: int) (opcodes: int list) =
-    if operator = 1 then
-        getAddition opcodes
-    elif operator = 2 then
-        getMultiplication opcodes
-    else
-        getHalt opcodes
-        
-let rec getStatements (opcodes: int list) =
-    let operator = opcodes.Head
-    let (statement, remainder) = getStatement operator opcodes.Tail
-    if remainder.IsEmpty then
-        [statement]
-    else
-        statement::getStatements remainder
-       
-let processAddition (in1: int) (in2: int) (out: int) (state: int array) =
-    let result = state.[in1] + state.[in2]
-    let newState = Array.copy state
-    Array.set newState out result
-    newState
-    
-let processMultiplication (in1: int) (in2: int) (out: int) (state: int array) =
-    let result = state.[in1] * state.[in2]
-    let newState = Array.copy state
-    Array.set newState out result
-    newState
-    
-let rec processCommand (commands: Statements list) (state: int array) =
-    if commands.IsEmpty then
-        state
-    else
-        match commands.Head with
-        | Addition (in1, in2, out) ->
-            processAddition in1 in2 out state
-            |> processCommand commands.Tail
-        | Multiplication (in1, in2, out) ->
-            processMultiplication in1 in2 out state
-            |> processCommand commands.Tail
-        | Halt _ -> state
 
-let solution () =
+let fetchCode (codes: int array) (position: int) =
+    if position >= codes.Length then
+        0
+    else
+        codes.[position]
+        
+let pointerValue (codes: int array) (position: int) =
+    fetchCode codes position
+    |> (fun x -> codes.[x])
+        
+let rec processOpcode (codes: int array) (position: int) =
+    let operation = fetchCode codes position
+    if operation = 1 || operation = 2 then
+        let in1 = pointerValue codes (position + 1)
+        let in2 = pointerValue codes (position + 2)
+        let outLoc = fetchCode codes (position + 3)
+        let newState = Array.copy codes
+    
+        if operation = 1 then
+            // do the addition here
+            let res = in1 + in2
+            Array.set newState outLoc res
+            processOpcode newState (position + 4)
+        else
+            // do the multiply here
+            let res = in1 * in2
+            Array.set newState outLoc res
+            processOpcode newState (position + 4)
+    else codes
+    
+let testNounAndVerb noun verb =
     let codes =
         readInputFile 2
         |> Seq.reduce (fun acc x -> acc + x)
         |> (fun x -> x.Split ',')
-        |> Array.toList
-        |> List.map int
-        |> getStatements
-     
-    let initialState = Array.zeroCreate 256
-    Array.set initialState 1 12
-    Array.set initialState 2 2
+        |> Array.map int
+        
+    Array.set codes 1 noun
+    Array.set codes 2 verb
     
-    let resultState = processCommand codes initialState
+    let machineState = processOpcode codes 0
+    machineState.[0]
     
-    sprintf "%d" resultState.[0]
+let getNounAndVerb () =
+    let combos = seq {
+        for noun in 1..99 do
+            for verb in 1..99 do
+                yield (noun, verb)
+    }
+    combos
+    |> Seq.tryFind (fun (noun, verb) ->
+        let res = testNounAndVerb noun verb
+        res = 19690720
+        )
+        
+let solution () =
+    let starterQuiz = testNounAndVerb 12 2
+    
+    let resultPair = getNounAndVerb ()
+    if resultPair.IsSome then
+        let (noun, verb) = resultPair.Value
+        let total = 100 * noun + verb
+        sprintf "%d, %d" starterQuiz total
+    else
+        sprintf "%d" starterQuiz
