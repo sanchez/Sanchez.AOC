@@ -8,12 +8,14 @@
         <e p="Core.fs" t="Include" />
         <e p="Inputs" t="Include">
           <e p="day1.txt" t="Include" />
+          <e p="day2.txt" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive" />
         <e p="Program.fs" t="Include" />
         <e p="Sanchez.AOC2019.Runner.fsproj" t="IncludeRecursive" />
         <e p="Solutions" t="Include">
           <e p="Day1.fs" t="Include" />
+          <e p="Day2.fs" t="Include" />
         </e>
       </e>
       <e p="Sanchez.AOC2019.sln" t="IncludeFlat" />
