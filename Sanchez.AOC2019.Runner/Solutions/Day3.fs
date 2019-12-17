@@ -37,6 +37,34 @@ let rec generateCoords (currentPos: int * int) (directions: Direction list) =
         coords
         |> Array.toList
         |> (fun x -> x @ (generateCoords finalCord directions.Tail))
+        
+let getMinOption (a: int option) (b: int option) =
+    if a.IsSome && b.IsSome then
+        if a.Value < b.Value then a
+        else b
+    elif a.IsSome then a
+    elif b.IsSome then b
+    else None
+
+let rec getWireShortestDistance (wireCoords: (int * int) list) (coord: int * int) (depth: int) =
+    if wireCoords.IsEmpty then
+        None
+    else
+        let nextDistance = getWireShortestDistance wireCoords.Tail coord (depth + 1)
+        if wireCoords.Head = coord then
+            match nextDistance with
+            | Some dist -> List.min [depth; dist] |> Some
+            | None -> Some depth
+        else
+            nextDistance
+
+let getWireDistance (wireCoords: (int * int) list) (coord: int*int) =
+    wireCoords |> List.tryFindIndex ((=) coord)
+    
+let getTotalWireDistance (wire1Coords: (int * int) list) (wire2Coords: (int * int) list) (coord: int * int) =
+    let wire1Length = wire1Coords |> List.tryFindIndex ((=) coord)
+    let wire2Length = wire2Coords |> List.tryFindIndex ((=) coord)
+    Option.map2 (+) wire1Length wire2Length
 
 let solution () =
     let directions =
@@ -65,9 +93,27 @@ let solution () =
         |> Seq.map (fun (x, y) -> (Math.Abs x) + (Math.Abs y))
         |> Seq.sort
         |> Seq.head
+        
+    let resultWireCoords =
+        wire1Coords.Intersect wire2Coords
+        
+    let distances =
+        resultWireCoords
+        |> Seq.map (getTotalWireDistance wire1Coords wire2Coords)
+        |> Seq.filter (fun x -> x.IsSome)
+        |> Seq.map (fun x -> x.Value)
+        |> Seq.sort
+        
+    let totalDistance =
+        resultWireCoords
+        |> Seq.map (getTotalWireDistance wire1Coords wire2Coords)
+        |> Seq.filter (fun x -> x.IsSome)
+        |> Seq.map (fun x -> x.Value)
+        |> Seq.sort
+        |> Seq.head
     
 //    let resultPoints =
 //        wire1Coords
 //        |> List.filter (fun x -> wire2Coords |> List.contains x)
     
-    sprintf "%d" resultDistance
+    sprintf "%d, %d" resultDistance totalDistance
