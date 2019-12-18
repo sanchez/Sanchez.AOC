@@ -18,6 +18,7 @@
           <e p="Day1.fs" t="Include" />
           <e p="Day2.fs" t="Include" />
           <e p="Day3.fs" t="Include" />
+          <e p="Day4.fs" t="Include" />
         </e>
       </e>
       <e p="Sanchez.AOC2019.sln" t="IncludeFlat" />

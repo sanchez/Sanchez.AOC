@@ -10,6 +10,7 @@
         <Compile Include="Solutions\Day1.fs" />
         <Compile Include="Solutions\Day2.fs" />
         <Compile Include="Solutions\Day3.fs" />
+        <Compile Include="Solutions\Day4.fs" />
         <Compile Include="Program.fs" />
         <Content Include="Inputs\day1.txt" />
         <Content Include="Inputs\day2.txt" />
