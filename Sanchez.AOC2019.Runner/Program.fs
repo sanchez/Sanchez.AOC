@@ -3,10 +3,12 @@
 open System
 open Sanchez.AOC2019.Runner.Core
 open Sanchez.AOC2019.Runner.Solutions
+open Sanchez.AOC2019.Runner.Solutions
 
 [<EntryPoint>]
 let main argv =
     let solutions: SolutionComputer list = [
+        Day6.solution
         Day5.solution
         Day4.solution
         Day3.solution
