@@ -49,9 +49,9 @@ let rec getPath (planets: Map<string, string>) (visited: string list) (currentNo
             |> List.toArray
             |> Array.sortBy (fun x -> x.Length)
             
-        Array.tryHead paths
-        |> Option.defaultValue [||]
-        |> Array.append [|currentNode|]
+        match Array.tryHead paths with
+        | Some h -> Array.append [|currentNode|] h
+        | None -> [||]
 
 let solution () =
     let testInput =
@@ -86,4 +86,4 @@ let solution () =
     let testPath = getPath testInput [] "YOU"
     let pathToSanta = getPath planets [] "YOU"
     
-    sprintf "%d" sumTotal
+    sprintf "%d,%d" sumTotal (pathToSanta.Length - 3)
