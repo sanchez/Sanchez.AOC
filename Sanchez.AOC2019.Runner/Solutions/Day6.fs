@@ -36,7 +36,7 @@ let possibleNodes (planets: Map<string, string>) (currentNode: string) =
     | None -> childrenPlanets
     
 let rec getPath (planets: Map<string, string>) (visited: string list) (currentNode: string) =
-    if currentNode = "SAN" then [||]
+    if currentNode = "SAN" then [|"SAN"|]
     else
         let possible =
             possibleNodes planets currentNode
@@ -51,6 +51,7 @@ let rec getPath (planets: Map<string, string>) (visited: string list) (currentNo
             
         Array.tryHead paths
         |> Option.defaultValue [||]
+        |> Array.append [|currentNode|]
 
 let solution () =
     let testInput =
@@ -66,6 +67,8 @@ let solution () =
             "E)J"
             "J)K"
             "K)L"
+            "K)YOU"
+            "I)SAN"
         ]
         |> Seq.fold generateLinks Map.empty
     let testResult = testInput |> Map.fold (countDirectAndIndirect testInput) (0, 0)
@@ -80,6 +83,7 @@ let solution () =
         
     let sumTotal = (fst directAndIndirect) + (snd directAndIndirect)
     
+    let testPath = getPath testInput [] "YOU"
     let pathToSanta = getPath planets [] "YOU"
     
     sprintf "%d" sumTotal
