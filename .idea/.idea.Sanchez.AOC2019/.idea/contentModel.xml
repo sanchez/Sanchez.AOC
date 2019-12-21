@@ -12,6 +12,7 @@
           <e p="day3.txt" t="Include" />
           <e p="day5.txt" t="Include" />
           <e p="day6.txt" t="Include" />
+          <e p="day7.txt" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive" />
         <e p="Program.fs" t="Include" />
@@ -23,6 +24,8 @@
           <e p="Day4.fs" t="Include" />
           <e p="Day5.fs" t="Include" />
           <e p="Day6.fs" t="Include" />
+          <e p="Day7.fs" t="Include" />
+          <e p="IntCode.fs" t="Include" />
         </e>
       </e>
       <e p="Sanchez.AOC2019.sln" t="IncludeFlat" />

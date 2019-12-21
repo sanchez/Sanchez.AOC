@@ -179,5 +179,14 @@ let solution () =
         |> Seq.toArray
         |> Array.last
         
+    let outputs =
+        IntCode.executeIntCode codes [1]
+        |> fst
+    let outputsPassed =
+        outputs
+        |> Seq.filter (fun x -> x <> 0)
+        |> Seq.length
+    let passed = outputsPassed = outputs.Length
+        
         
     sprintf "%d" diagnoseCode

@@ -7,18 +7,21 @@
 
     <ItemGroup>
         <Compile Include="Core.fs" />
+        <Compile Include="Solutions\IntCode.fs" />
         <Compile Include="Solutions\Day1.fs" />
         <Compile Include="Solutions\Day2.fs" />
         <Compile Include="Solutions\Day3.fs" />
         <Compile Include="Solutions\Day4.fs" />
         <Compile Include="Solutions\Day5.fs" />
         <Compile Include="Solutions\Day6.fs" />
+        <Compile Include="Solutions\Day7.fs" />
         <Compile Include="Program.fs" />
         <Content Include="Inputs\day1.txt" />
         <Content Include="Inputs\day2.txt" />
         <Content Include="Inputs\day3.txt" />
         <Content Include="Inputs\day5.txt" />
         <Content Include="Inputs\day6.txt" />
+        <Content Include="Inputs\day7.txt" />
     </ItemGroup>
 
 </Project>
